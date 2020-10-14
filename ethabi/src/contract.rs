@@ -16,6 +16,8 @@ use alloc::collections::btree_map::Values;
 use alloc::{borrow::ToOwned, string::String, vec::Vec};
 use core::fmt;
 use core::iter::Flatten;
+#[cfg(feature = "std")]
+use std::io;
 
 /// API building calls to contracts ABI.
 #[derive(Clone, Debug, PartialEq)]
