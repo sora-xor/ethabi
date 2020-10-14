@@ -8,6 +8,7 @@
 
 use crate::param_type::{ParamType, Writer};
 use crate::Hash;
+use alloc::{string::String, vec::Vec};
 use tiny_keccak::Keccak;
 
 pub fn short_signature(name: &str, params: &[ParamType]) -> [u8; 4] {

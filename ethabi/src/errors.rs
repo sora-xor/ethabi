@@ -6,10 +6,12 @@
 // option. This file may not be copied, modified, or distributed
 // except according to those terms.
 
-use std::{fmt, num, result::Result as StdResult, string};
+use alloc::string;
+use alloc::{borrow::ToOwned, string::String};
+use core::{fmt, num, result::Result as StdResult};
 
 /// Ethabi result type
-pub type Result<T> = std::result::Result<T, Error>;
+pub type Result<T> = core::result::Result<T, Error>;
 
 /// Ethabi errors
 #[derive(Debug)]
@@ -30,6 +32,7 @@ pub enum Error {
 	Other(String),
 }
 
+#[cfg(feature = "std")]
 impl std::error::Error for Error {
 	fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
 		use self::Error::*;

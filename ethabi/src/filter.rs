@@ -7,9 +7,10 @@
 // except according to those terms.
 
 use crate::{Hash, Token};
+use alloc::vec::Vec;
+use core::ops;
 use serde::{Serialize, Serializer};
 use serde_json::Value;
-use std::ops;
 
 /// Raw topic filter.
 #[derive(Debug, PartialEq, Default)]
@@ -152,6 +153,7 @@ impl<T> ops::Index<usize> for Topic<T> {
 mod tests {
 	use super::{Topic, TopicFilter};
 	use crate::Hash;
+	use alloc::vec::Vec;
 	use serde_json;
 
 	fn hash(s: &'static str) -> Hash {

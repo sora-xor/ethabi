@@ -8,8 +8,9 @@
 
 //! Ethereum ABI params.
 use crate::{Address, Bytes, FixedBytes, ParamType, Uint};
+use alloc::{string::String, vec::Vec};
+use core::fmt;
 use hex::ToHex;
-use std::fmt;
 
 /// Ethereum ABI params.
 #[derive(Debug, PartialEq, Clone)]
@@ -235,6 +236,7 @@ impl Token {
 #[cfg(test)]
 mod tests {
 	use crate::{ParamType, Token};
+	use alloc::{boxed::Box, vec::Vec};
 
 	#[test]
 	fn test_type_check() {

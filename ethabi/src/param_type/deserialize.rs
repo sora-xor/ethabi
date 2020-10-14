@@ -7,9 +7,10 @@
 // except according to those terms.
 
 use super::{ParamType, Reader};
+use alloc::string::String;
+use core::fmt;
 use serde::de::{Error as SerdeError, Visitor};
 use serde::{Deserialize, Deserializer};
-use std::fmt;
 
 impl<'a> Deserialize<'a> for ParamType {
 	fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
@@ -47,6 +48,7 @@ impl<'a> Visitor<'a> for ParamTypeVisitor {
 #[cfg(test)]
 mod tests {
 	use crate::ParamType;
+	use alloc::{boxed::Box, vec::Vec};
 	use serde_json;
 
 	#[test]

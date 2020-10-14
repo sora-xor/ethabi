@@ -12,6 +12,8 @@ mod lenient;
 mod strict;
 mod token;
 
+use alloc::{boxed::Box, string::String, vec::Vec};
+
 pub use self::lenient::LenientTokenizer;
 pub use self::strict::StrictTokenizer;
 pub use self::token::Token;

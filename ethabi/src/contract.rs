@@ -10,11 +10,12 @@ use crate::operation::Operation;
 use crate::{errors, Constructor, Error, Event, Function};
 use serde::de::{SeqAccess, Visitor};
 use serde::{Deserialize, Deserializer};
-use serde_json;
-use std::collections::hash_map::Values;
-use std::collections::HashMap;
-use std::iter::Flatten;
-use std::{fmt, io};
+
+use alloc::collections::btree_map::BTreeMap;
+use alloc::collections::btree_map::Values;
+use alloc::{borrow::ToOwned, string::String, vec::Vec};
+use core::fmt;
+use core::iter::Flatten;
 
 /// API building calls to contracts ABI.
 #[derive(Clone, Debug, PartialEq)]
@@ -22,9 +23,9 @@ pub struct Contract {
 	/// Contract constructor.
 	pub constructor: Option<Constructor>,
 	/// Contract functions.
-	pub functions: HashMap<String, Vec<Function>>,
+	pub functions: BTreeMap<String, Vec<Function>>,
 	/// Contract events, maps signature to event.
-	pub events: HashMap<String, Vec<Event>>,
+	pub events: BTreeMap<String, Vec<Event>>,
 	/// Contract has fallback function.
 	pub fallback: bool,
 }
@@ -51,8 +52,12 @@ impl<'a> Visitor<'a> for ContractVisitor {
 	where
 		A: SeqAccess<'a>,
 	{
-		let mut result =
-			Contract { constructor: None, functions: HashMap::default(), events: HashMap::default(), fallback: false };
+		let mut result = Contract {
+			constructor: None,
+			functions: BTreeMap::default(),
+			events: BTreeMap::default(),
+			fallback: false,
+		};
 
 		while let Some(operation) = seq.next_element()? {
 			match operation {
@@ -77,6 +82,7 @@ impl<'a> Visitor<'a> for ContractVisitor {
 
 impl Contract {
 	/// Loads contract from json.
+	#[cfg(feature = "std")]
 	pub fn load<T: io::Read>(reader: T) -> errors::Result<Self> {
 		serde_json::from_reader(reader).map_err(From::from)
 	}

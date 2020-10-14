@@ -8,6 +8,7 @@
 
 //! Contract constructor call builder.
 use crate::{encode, Bytes, Error, Param, ParamType, Result, Token};
+use alloc::vec::Vec;
 use serde::Deserialize;
 
 /// Contract constructor specification.

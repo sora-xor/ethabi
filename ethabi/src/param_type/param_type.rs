@@ -9,7 +9,8 @@
 //! Function and event param types.
 
 use super::Writer;
-use std::fmt;
+use alloc::{boxed::Box, vec::Vec};
+use core::fmt;
 
 /// Function and event param types.
 #[derive(Debug, Clone, PartialEq)]
@@ -68,6 +69,7 @@ impl ParamType {
 #[cfg(test)]
 mod tests {
 	use crate::ParamType;
+	use alloc::{borrow::ToOwned, boxed::Box};
 
 	#[test]
 	fn test_param_type_display() {

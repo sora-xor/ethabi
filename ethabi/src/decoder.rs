@@ -10,6 +10,7 @@
 
 use crate::util::slice_data;
 use crate::{Error, ParamType, Token, Word};
+use alloc::{string::String, vec::Vec};
 
 struct DecodeResult {
 	token: Token,
@@ -225,6 +226,7 @@ fn decode_param(param: &ParamType, slices: &[Word], offset: usize) -> Result<Dec
 #[cfg(test)]
 mod tests {
 	use crate::{decode, ParamType, Token};
+	use alloc::{borrow::ToOwned, boxed::Box};
 	use hex_literal::hex;
 
 	#[test]

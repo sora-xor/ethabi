@@ -7,6 +7,7 @@
 // except according to those terms.
 
 use crate::{Bytes, Hash, Result, Token, TopicFilter};
+use alloc::{string::String, vec::Vec};
 
 /// Common filtering functions that are available for any event.
 pub trait LogFilter {

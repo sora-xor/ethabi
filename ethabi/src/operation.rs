@@ -9,6 +9,7 @@
 //! Operation type.
 
 use crate::{Constructor, Event, Function};
+use alloc::string::{String, ToString};
 use serde::de::Error as SerdeError;
 use serde::{Deserialize, Deserializer};
 use serde_json::value::from_value;
@@ -64,6 +65,7 @@ impl<'a> Deserialize<'a> for Operation {
 #[cfg(test)]
 mod tests {
 	use super::Operation;
+	use crate::alloc::borrow::ToOwned;
 	use crate::{Function, Param, ParamType};
 	use serde_json;
 

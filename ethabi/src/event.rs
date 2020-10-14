@@ -8,8 +8,9 @@
 
 //! Contract event.
 
+use alloc::collections::btree_map::BTreeMap;
+use alloc::{string::String, vec::Vec};
 use serde::Deserialize;
-use std::collections::HashMap;
 use tiny_keccak::keccak256;
 
 use crate::{
@@ -158,7 +159,7 @@ impl Event {
 
 		let data_named_tokens = data_params.into_iter().map(|p| p.name).zip(data_tokens.into_iter());
 
-		let named_tokens = topics_named_tokens.chain(data_named_tokens).collect::<HashMap<String, Token>>();
+		let named_tokens = topics_named_tokens.chain(data_named_tokens).collect::<BTreeMap<String, Token>>();
 
 		let decoded_params = self
 			.params_names()
@@ -180,6 +181,8 @@ mod tests {
 		token::Token,
 		Event, EventParam, LogParam, ParamType,
 	};
+	use alloc::{borrow::ToOwned, boxed::Box, vec::Vec};
+	use ethereum_types::U256;
 	use hex::FromHex;
 
 	#[test]
@@ -240,11 +243,11 @@ mod tests {
 				params: vec![
 					(
 						"a".to_owned(),
-						Token::Int("0000000000000000000000000000000000000000000000000000000000000003".into())
+						Token::Int(U256::from(3)) // Token::Int("0000000000000000000000000000000000000000000000000000000000000003".into())
 					),
 					(
 						"b".to_owned(),
-						Token::Int("0000000000000000000000000000000000000000000000000000000000000002".into())
+						Token::Int(U256::from(2)) // Token::Int("0000000000000000000000000000000000000000000000000000000000000002".into())
 					),
 					("c".to_owned(), Token::Address("2222222222222222222222222222222222222222".parse().unwrap())),
 					("d".to_owned(), Token::Address("1111111111111111111111111111111111111111".parse().unwrap())),

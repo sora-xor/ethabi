@@ -8,9 +8,10 @@
 
 //! Function param.
 
+use alloc::{boxed::Box, string::String, vec::Vec};
+use core::fmt;
 use serde::de::{Error, MapAccess, Visitor};
 use serde::{Deserialize, Deserializer};
-use std::fmt;
 
 use crate::{ParamType, TupleParam};
 
@@ -110,6 +111,7 @@ impl<'a> Visitor<'a> for ParamVisitor {
 #[cfg(test)]
 mod tests {
 	use crate::{Param, ParamType};
+	use alloc::{borrow::ToOwned, boxed::Box};
 	use serde_json;
 
 	#[test]

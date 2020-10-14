@@ -1,4 +1,4 @@
-use std::{fmt, io};
+use core::{fmt};
 
 /// Ethabi CLI errors
 #[derive(Debug)]

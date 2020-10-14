@@ -8,7 +8,11 @@
 
 //! Ethereum ABI encoding decoding library.
 
+#![cfg_attr(not(feature = "std"), no_std)]
 #![warn(missing_docs)]
+
+#[macro_use]
+extern crate alloc;
 
 mod constructor;
 mod contract;
@@ -28,6 +32,7 @@ pub mod token;
 mod tuple_param;
 mod util;
 
+#[cfg(feature = "std")]
 #[cfg(test)]
 mod tests;
 
@@ -47,6 +52,8 @@ pub use crate::{
 	token::Token,
 	tuple_param::TupleParam,
 };
+
+use alloc::vec::Vec;
 
 /// ABI word.
 pub type Word = [u8; 32];

@@ -9,6 +9,7 @@
 use crate::errors::Error;
 use crate::token::{StrictTokenizer, Tokenizer};
 use crate::Uint;
+use alloc::{string::String, vec::Vec};
 
 /// Tries to parse string as a token. Does not require string to clearly represent the value.
 pub struct LenientTokenizer;

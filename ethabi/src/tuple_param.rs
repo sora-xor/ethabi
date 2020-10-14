@@ -9,9 +9,10 @@
 //! Tuple param type.
 
 use crate::ParamType;
+use alloc::{boxed::Box, string::String, vec::Vec};
+use core::fmt;
 use serde::de::{Error, MapAccess, Visitor};
 use serde::{Deserialize, Deserializer};
-use std::fmt;
 
 /// Tuple params specification
 #[derive(Debug, Clone, PartialEq)]
@@ -90,6 +91,7 @@ impl<'a> Visitor<'a> for TupleParamVisitor {
 #[cfg(test)]
 mod tests {
 	use crate::{ParamType, TupleParam};
+	use alloc::{string::String, vec::Vec};
 	use serde_json;
 
 	#[test]
