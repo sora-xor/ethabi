@@ -1,2 +1,6 @@
 [workspace]
 members = ["ethabi", "derive", "contract", "tests"]
+
+[patch.crates-io]
+serde = { default-features = false, git = "https://github.com/vmarkushin/serde.git", features = ["alloc"], package = "serde" }
+serde_json = { default-features = false, git = "https://github.com/vmarkushin/json.git", features = ["alloc"], package = "serde_json" }
