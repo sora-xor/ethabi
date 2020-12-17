@@ -40,6 +40,14 @@ pub enum Token {
 	///
 	/// solidity name: uint
 	Uint(Uint),
+	/// Signed integer with size.
+	///
+	/// solidity name: intN
+	IntSized(Uint, usize),
+	/// Unisnged integer with size.
+	///
+	/// solidity name: uintN
+	UintSized(Uint, usize),
 	/// Boolean value.
 	///
 	/// solidity name: bool
@@ -83,6 +91,8 @@ impl fmt::Display for Token {
 
 				write!(f, "({})", s)
 			}
+			Token::IntSized(ref i, _) => write!(f, "{:x}", i),
+			Token::UintSized(ref i, _) => write!(f, "{:x}", i),
 		}
 	}
 }
@@ -140,6 +150,8 @@ impl Token {
 					false
 				}
 			}
+			Token::IntSized(_, size) => *param_type == ParamType::Int(size),
+			Token::UintSized(_, size) => *param_type == ParamType::Uint(size),
 		}
 	}
 
