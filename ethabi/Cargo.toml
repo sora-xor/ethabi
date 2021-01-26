@@ -10,8 +10,8 @@ edition = "2018"
 
 [dependencies]
 hex = { version = "2.0", package = "rustc-hex", default-features = false }
-serde = { version = "1.0", git = "https://github.com/vmarkushin/serde.git", features = ["alloc", "derive"], package = "serde", default-features = false }
-serde_json = { version = "1.0", git = "https://github.com/vmarkushin/json.git", features = ["alloc"], package = "serde_json", default-features = false }
+serde = { version = "1.0", features = ["alloc", "derive"], default-features = false }
+serde_json = { version = "1.0", features = ["alloc"], default-features = false }
 tiny-keccak = "1.4"
 ethereum-types = { version = "0.9.4", default-features = false, features = ["serialize_no_std", "codec"], git = "https://github.com/vmarkushin/parity-common.git", branch = "no-std", package = "ethereum-types" }
 uint = { version = "0.8.5", default-features = false, git = "https://github.com/vmarkushin/parity-common.git", branch = "no-std", package = "uint" }
