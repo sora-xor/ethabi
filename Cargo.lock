@@ -24,15 +24,15 @@ checksum = "b0a5e3906bcbf133e33c1d4d95afc664ad37fbdb9f6568d8043e7ea8c27d93d3"
 
 [[package]]
 name = "byteorder"
-version = "1.3.4"
+version = "1.4.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "08c48aae112d48ed9f069b33538ea9e3e90aa263cfa3d1c24309612b1f7472de"
+checksum = "ae44d1a3d5a19df61dd0c8beb138458ac2a53a7ac09eba97d55592540004306b"
 
 [[package]]
 name = "cfg-if"
-version = "0.1.10"
+version = "1.0.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "4785bdd1c96b2a846b2bd7cc02e86b6b3dbf14e7e53446c4f54c92a361040822"
+checksum = "baf1de4339761588bc0619e3cbc0120ee582ebb74b53b4efbf79117bd2da40fd"
 
 [[package]]
 name = "crunchy"
@@ -89,7 +89,7 @@ dependencies = [
 [[package]]
 name = "ethbloom"
 version = "0.9.3"
-source = "git+https://github.com/vmarkushin/parity-common.git?branch=no-std#d9669f340726ae8d8b718320bf146e709755e9fc"
+source = "git+https://github.com/vmarkushin/parity-common.git?branch=no-std#76837f10b96f63b52b97394e88a25f6cdda28c91"
 dependencies = [
  "crunchy",
  "fixed-hash",
@@ -101,7 +101,7 @@ dependencies = [
 [[package]]
 name = "ethereum-types"
 version = "0.9.4"
-source = "git+https://github.com/vmarkushin/parity-common.git?branch=no-std#d9669f340726ae8d8b718320bf146e709755e9fc"
+source = "git+https://github.com/vmarkushin/parity-common.git?branch=no-std#76837f10b96f63b52b97394e88a25f6cdda28c91"
 dependencies = [
  "ethbloom",
  "fixed-hash",
@@ -115,7 +115,7 @@ dependencies = [
 [[package]]
 name = "fixed-hash"
 version = "0.6.1"
-source = "git+https://github.com/vmarkushin/parity-common.git?branch=no-std#d9669f340726ae8d8b718320bf146e709755e9fc"
+source = "git+https://github.com/vmarkushin/parity-common.git?branch=no-std#76837f10b96f63b52b97394e88a25f6cdda28c91"
 dependencies = [
  "byteorder",
  "rand",
@@ -125,9 +125,9 @@ dependencies = [
 
 [[package]]
 name = "getrandom"
-version = "0.1.15"
+version = "0.1.16"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "fc587bc0ec293155d5bfa6b9891ec18a1e330c234f896ea47fbada4cadbe47e6"
+checksum = "8fc3cb4d91f53b50155bdcfd23f6a4c39ae1969c2ae85982b135750cccaf5fce"
 dependencies = [
  "cfg-if",
  "libc",
@@ -136,9 +136,9 @@ dependencies = [
 
 [[package]]
 name = "heck"
-version = "0.3.1"
+version = "0.3.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "20564e78d53d2bb135c343b3f47714a56af2061f1c928fdb541dc7b9fdd94205"
+checksum = "87cbf45460356b7deeb5e3415b5563308c0a9b057c85e12b06ad551f98d0a6ac"
 dependencies = [
  "unicode-segmentation",
 ]
@@ -165,7 +165,7 @@ dependencies = [
 [[package]]
 name = "impl-codec"
 version = "0.4.2"
-source = "git+https://github.com/vmarkushin/parity-common.git?branch=no-std#d9669f340726ae8d8b718320bf146e709755e9fc"
+source = "git+https://github.com/vmarkushin/parity-common.git?branch=no-std#76837f10b96f63b52b97394e88a25f6cdda28c91"
 dependencies = [
  "parity-scale-codec",
 ]
@@ -173,7 +173,7 @@ dependencies = [
 [[package]]
 name = "impl-rlp"
 version = "0.2.1"
-source = "git+https://github.com/vmarkushin/parity-common.git?branch=no-std#d9669f340726ae8d8b718320bf146e709755e9fc"
+source = "git+https://github.com/vmarkushin/parity-common.git?branch=no-std#76837f10b96f63b52b97394e88a25f6cdda28c91"
 dependencies = [
  "rlp",
 ]
@@ -181,28 +181,28 @@ dependencies = [
 [[package]]
 name = "impl-serde"
 version = "0.3.2"
-source = "git+https://github.com/vmarkushin/parity-common.git?branch=no-std#d9669f340726ae8d8b718320bf146e709755e9fc"
+source = "git+https://github.com/vmarkushin/parity-common.git?branch=no-std#76837f10b96f63b52b97394e88a25f6cdda28c91"
 dependencies = [
  "serde",
 ]
 
 [[package]]
 name = "itoa"
-version = "0.4.6"
+version = "0.4.7"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "dc6f3ad7b9d11a0c00842ff8de1b60ee58661048eb8049ed33c73594f359d7e6"
+checksum = "dd25036021b0de88a0aff6b850051563c6516d0bf53f8638938edbb9de732736"
 
 [[package]]
 name = "libc"
-version = "0.2.80"
+version = "0.2.82"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "4d58d1b70b004888f764dfbf6a26a3b0342a1632d33968e4a179d8011c760614"
+checksum = "89203f3fba0a3795506acaad8ebce3c80c0af93f994d5a1d7a0b1eeb23271929"
 
 [[package]]
 name = "parity-scale-codec"
-version = "1.3.5"
+version = "1.3.6"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "7c740e5fbcb6847058b40ac7e5574766c6388f585e184d769910fe0d3a2ca861"
+checksum = "79602888a81ace83e3d1d4b2873286c1f5f906c84db667594e8db8da3506c383"
 dependencies = [
  "arrayvec",
  "bitvec",
@@ -231,14 +231,14 @@ dependencies = [
 
 [[package]]
 name = "ppv-lite86"
-version = "0.2.9"
+version = "0.2.10"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "c36fa947111f5c62a733b652544dd0016a43ce89619538a8ef92724a6f501a20"
+checksum = "ac74c624d6b2d21f425f752262f42188365d7b8ff1aff74c82e45136510a4857"
 
 [[package]]
 name = "primitive-types"
 version = "0.7.4"
-source = "git+https://github.com/vmarkushin/parity-common.git?branch=no-std#d9669f340726ae8d8b718320bf146e709755e9fc"
+source = "git+https://github.com/vmarkushin/parity-common.git?branch=no-std#76837f10b96f63b52b97394e88a25f6cdda28c91"
 dependencies = [
  "fixed-hash",
  "impl-codec",
@@ -264,9 +264,9 @@ dependencies = [
 
 [[package]]
 name = "quote"
-version = "1.0.7"
+version = "1.0.8"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "aa563d17ecb180e500da1cfd2b028310ac758de548efdd203e18f283af693f37"
+checksum = "991431c3519a3f36861882da93630ce66b52918dcf1b8e2fd66b397fc96f28df"
 dependencies = [
  "proc-macro2",
 ]
@@ -321,7 +321,7 @@ dependencies = [
 [[package]]
 name = "rlp"
 version = "0.4.6"
-source = "git+https://github.com/vmarkushin/parity-common.git?branch=no-std#d9669f340726ae8d8b718320bf146e709755e9fc"
+source = "git+https://github.com/vmarkushin/parity-common.git?branch=no-std#76837f10b96f63b52b97394e88a25f6cdda28c91"
 dependencies = [
  "rustc-hex",
 ]
@@ -340,16 +340,18 @@ checksum = "71d301d4193d031abdd79ff7e3dd721168a9572ef3fe51a1517aba235bd8f86e"
 
 [[package]]
 name = "serde"
-version = "1.0.117"
-source = "git+https://github.com/vmarkushin/serde.git#fc3f104c4a08a85b403c468348347240db6cc992"
+version = "1.0.113"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "6135c78461981c79497158ef777264c51d9d0f4f3fc3a4d22b915900e42dac6a"
 dependencies = [
  "serde_derive",
 ]
 
 [[package]]
 name = "serde_derive"
-version = "1.0.117"
-source = "git+https://github.com/vmarkushin/serde.git#fc3f104c4a08a85b403c468348347240db6cc992"
+version = "1.0.113"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "93c5eaa17d0954cb481cdcfffe9d84fcfa7a1a9f2349271e678677be4c26ae31"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -358,8 +360,9 @@ dependencies = [
 
 [[package]]
 name = "serde_json"
-version = "1.0.59"
-source = "git+https://github.com/vmarkushin/json.git#31e28929dc3b20d3bde6ff3dd7b2e3f3e2ca6a1c"
+version = "1.0.61"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "4fceb2595057b6891a4ee808f70054bd2d12f0e97f1cbb78689b59f676df325a"
 dependencies = [
  "itoa",
  "ryu",
@@ -374,9 +377,9 @@ checksum = "a2eb9349b6444b326872e140eb1cf5e7c522154d69e7a0ffb0fb81c06b37543f"
 
 [[package]]
 name = "syn"
-version = "1.0.48"
+version = "1.0.13"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "cc371affeffc477f42a221a1e4297aedcea33d47d19b61455588bd9d8f6b19ac"
+checksum = "1e4ff033220a41d1a57d8125eab57bf5263783dfdcc18688b1dacc6ce9651ef8"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -404,7 +407,7 @@ dependencies = [
 [[package]]
 name = "uint"
 version = "0.8.5"
-source = "git+https://github.com/vmarkushin/parity-common.git?branch=no-std#d9669f340726ae8d8b718320bf146e709755e9fc"
+source = "git+https://github.com/vmarkushin/parity-common.git?branch=no-std#76837f10b96f63b52b97394e88a25f6cdda28c91"
 dependencies = [
  "byteorder",
  "crunchy",
@@ -414,9 +417,9 @@ dependencies = [
 
 [[package]]
 name = "unicode-segmentation"
-version = "1.6.0"
+version = "1.7.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "e83e153d1053cbb5a118eeff7fd5be06ed99153f00dbcd8ae310c5fb2b22edc0"
+checksum = "bb0d2e7be6ae3a5fa87eed5fb451aff96f2573d2694942e40543ae0bbe19c796"
 
 [[package]]
 name = "unicode-xid"
