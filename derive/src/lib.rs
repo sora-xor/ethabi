@@ -32,11 +32,11 @@ pub fn ethabi_derive(input: proc_macro::TokenStream) -> proc_macro::TokenStream 
 
 fn impl_ethabi_derive(ast: &syn::DeriveInput) -> Result<proc_macro2::TokenStream> {
 	let options = get_options(&ast.attrs, "ethabi_contract_options")?;
-	let path = get_option(&options, "path")?;
-	let normalized_path = normalize_path(&path)?;
-	let source_file = fs::File::open(&normalized_path)
-		.map_err(|_| Error::Other(format!("Cannot load contract abi from `{}`", normalized_path.display())))?;
-	let contract = Contract::load(source_file)?;
+	let content = get_option(&options, "path")?;
+	// let normalized_path = normalize_path(&content)?;
+	// let source_file = fs::File::open(&normalized_path)
+	// 	.map_err(|_| Error::Other(format!("Cannot load contract abi from `{}`", normalized_path.display())))?;
+	let contract = Contract::from_str(&content)?;
 	let c = contract::Contract::from(&contract);
 	Ok(c.generate())
 }

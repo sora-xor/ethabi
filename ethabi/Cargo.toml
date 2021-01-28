@@ -17,7 +17,7 @@ anyhow = { version = "1", default-features=false }
 hex = { version = "0.4", default-features = false }
 serde = { version = "1.0", features = ["alloc", "derive"], default-features = false }
 serde_json = { version = "1.0", features = ["alloc"], default-features = false }
-sha3 = "0.9"
+sha3 = { version = "0.9", default-features = false }
 ethereum-types = { git = "https://github.com/vmarkushin/parity-common.git", branch = "no-std", package = "ethereum-types", default-features = false, features = ["serialize_no_std", "codec"] }
 thiserror = "1"
 uint = { git = "https://github.com/vmarkushin/parity-common.git", branch = "no-std", package = "uint", default-features = false }
@@ -35,4 +35,5 @@ std = [
     'ethereum-types/std',
     'hex/std',
     'anyhow/std',
+    'sha3/std',
 ]

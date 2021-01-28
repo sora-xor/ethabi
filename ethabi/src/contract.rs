@@ -89,6 +89,11 @@ impl<'a> Visitor<'a> for ContractVisitor {
 
 impl Contract {
 	/// Loads contract from json.
+	pub fn from_str(s: &str) -> errors::Result<Self> {
+		serde_json::from_str(s).map_err(From::from)
+	}
+
+	/// Loads contract from json.
 	#[cfg(feature = "std")]
 	pub fn load<T: io::Read>(reader: T) -> errors::Result<Self> {
 		serde_json::from_reader(reader).map_err(From::from)
