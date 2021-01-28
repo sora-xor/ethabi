@@ -107,7 +107,7 @@ fn load_function(path: &str, name_or_signature: &str) -> anyhow::Result<Function
 				.iter()
 				.find(|f| f.signature() == name_or_signature)
 				.cloned()
-				.ok_or_else(|| anyhow!("invalid function signature `{}`", name_or_signature))
+				.ok_or_else(|| Error::Other(format!("invalid function signature `{}`", name_or_signature)))
 		}
 
 		// It's a name
@@ -116,9 +116,9 @@ fn load_function(path: &str, name_or_signature: &str) -> anyhow::Result<Function
 			match functions.len() {
 				0 => unreachable!(),
 				1 => Ok(functions[0].clone()),
-				_ => Err(anyhow!(
-					"More than one function found for name `{}`, try providing the full signature",
-					name_or_signature
+				_ => Err(Error::Other(
+					format!("More than one function found for name `{}`, try providing the full signature",
+					name_or_signature)
 				)),
 			}
 		}
@@ -140,7 +140,7 @@ fn load_event(path: &str, name_or_signature: &str) -> anyhow::Result<Event> {
 				.iter()
 				.find(|event| event.signature() == signature)
 				.cloned()
-				.ok_or_else(|| anyhow!("Invalid signature `{}`", signature))
+				.ok_or_else(|| Error::Other(format!("Invalid signature `{}`", signature)))
 		}
 
 		// It's a name.
@@ -149,9 +149,9 @@ fn load_event(path: &str, name_or_signature: &str) -> anyhow::Result<Event> {
 			match events.len() {
 				0 => unreachable!(),
 				1 => Ok(events[0].clone()),
-				_ => Err(anyhow!(
-					"More than one function found for name `{}`, try providing the full signature",
-					name_or_signature
+				_ => Err(Error::Other(
+					format!("More than one function found for name `{}`, try providing the full signature",
+					name_or_signature)
 				)),
 			}
 		}

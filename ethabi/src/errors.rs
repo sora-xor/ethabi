@@ -8,7 +8,6 @@
 
 use alloc::string;
 use alloc::string::String;
-use anyhow::anyhow;
 use core::num;
 use thiserror::Error;
 
@@ -38,16 +37,15 @@ pub enum Error {
 	Hex(#[from] hex::FromHexError),
 	/// Other errors.
 	#[error("{0}")]
-	Other(#[from] anyhow::Error),
+	Other(String),
 }
 
 impl From<uint::FromDecStrErr> for Error {
 	fn from(err: uint::FromDecStrErr) -> Self {
 		use uint::FromDecStrErr::*;
 		match err {
-			InvalidCharacter => anyhow!("Uint parse error: InvalidCharacter"),
-			InvalidLength => anyhow!("Uint parse error: InvalidLength"),
+			InvalidCharacter => Self::Other("Uint parse error: InvalidCharacter".into()),
+			InvalidLength => Self::Other("Uint parse error: InvalidLength".into()),
 		}
-		.into()
 	}
 }
