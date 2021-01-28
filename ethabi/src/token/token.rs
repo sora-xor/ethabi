@@ -10,7 +10,6 @@
 use crate::{Address, Bytes, FixedBytes, ParamType, Uint};
 use alloc::{string::String, vec::Vec};
 use core::fmt;
-use hex::ToHex;
 
 /// Ethereum ABI params.
 #[derive(Debug, PartialEq, Clone)]

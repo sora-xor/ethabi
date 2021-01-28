@@ -9,7 +9,7 @@
 //! Event param specification.
 
 use crate::{ParamType, TupleParam};
-use alloc::{boxed::Box, string::String, vec::Vec};
+use alloc::{string::String, vec::Vec};
 use core::fmt;
 use serde::de::{Error, MapAccess, Visitor};
 use serde::{Deserialize, Deserializer};
@@ -99,7 +99,7 @@ impl<'a> Visitor<'a> for EventParamVisitor {
 #[cfg(test)]
 mod tests {
 	use crate::{EventParam, ParamType};
-	use alloc::{borrow::ToOwned, boxed::Box};
+	use alloc::borrow::ToOwned;
 	use serde_json;
 
 	#[test]

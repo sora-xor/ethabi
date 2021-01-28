@@ -6,11 +6,11 @@
 // option. This file may not be copied, modified, or distributed
 // except according to those terms.
 
-use anyhow::anyhow;
-use thiserror::Error;
 use alloc::string;
-use alloc::{borrow::ToOwned, string::String};
-use core::{fmt, num, result::Result as StdResult};
+use alloc::string::String;
+use anyhow::anyhow;
+use core::num;
+use thiserror::Error;
 
 /// Ethabi result type
 pub type Result<T> = core::result::Result<T, Error>;

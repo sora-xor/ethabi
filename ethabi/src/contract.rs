@@ -8,13 +8,13 @@
 
 use crate::operation::Operation;
 use crate::{errors, Constructor, Error, Event, Function};
-use serde::de::{SeqAccess, Visitor};
-use serde::{Deserialize, Deserializer};
 use alloc::collections::btree_map::BTreeMap;
 use alloc::collections::btree_map::Values;
 use alloc::{borrow::ToOwned, string::String, vec::Vec};
 use core::fmt;
 use core::iter::Flatten;
+use serde::de::{SeqAccess, Visitor};
+use serde::{Deserialize, Deserializer};
 #[cfg(feature = "std")]
 use std::io;
 
@@ -29,6 +29,8 @@ pub struct Contract {
 	pub events: BTreeMap<String, Vec<Event>>,
 	/// Contract has fallback function.
 	pub fallback: bool,
+	/// Contract receives.
+	pub receive: bool,
 }
 
 impl<'a> Deserialize<'a> for Contract {
@@ -58,6 +60,7 @@ impl<'a> Visitor<'a> for ContractVisitor {
 			functions: BTreeMap::default(),
 			events: BTreeMap::default(),
 			fallback: false,
+			receive: false,
 		};
 
 		while let Some(operation) = seq.next_element()? {
@@ -73,6 +76,9 @@ impl<'a> Visitor<'a> for ContractVisitor {
 				}
 				Operation::Fallback => {
 					result.fallback = true;
+				}
+				Operation::Receive => {
+					result.receive = true;
 				}
 			}
 		}

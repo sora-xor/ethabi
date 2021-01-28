@@ -76,6 +76,7 @@ mod test {
 			functions: Default::default(),
 			events: Default::default(),
 			fallback: false,
+			receive: false,
 		};
 
 		let c = Contract::from(&ethabi_contract);

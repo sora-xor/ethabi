@@ -12,7 +12,6 @@ use alloc::collections::btree_map::BTreeMap;
 use alloc::{string::String, vec::Vec};
 use serde::Deserialize;
 use sha3::{Digest, Keccak256};
-use std::collections::HashMap;
 
 use crate::{
 	decode, encode, signature::long_signature, Error, EventParam, Hash, Log, LogParam, ParamType, RawLog,
@@ -183,7 +182,6 @@ mod tests {
 		Event, EventParam, LogParam, ParamType,
 	};
 	use alloc::{borrow::ToOwned, boxed::Box, vec::Vec};
-	use ethereum_types::U256;
 	use hex_literal::hex;
 
 	#[test]

@@ -9,7 +9,7 @@
 //! Tuple param type.
 
 use crate::ParamType;
-use alloc::{boxed::Box, string::String, vec::Vec};
+use alloc::{string::String, vec::Vec};
 use core::fmt;
 use serde::de::{Error, MapAccess, Visitor};
 use serde::{Deserialize, Deserializer};
