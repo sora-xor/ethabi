@@ -9,7 +9,7 @@
 use heck::SnakeCase;
 use proc_macro2::TokenStream;
 use quote::quote;
-use syn::export::Span;
+use proc_macro2::Span;
 use {ethabi, syn};
 
 use super::{
