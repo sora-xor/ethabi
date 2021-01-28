@@ -9,7 +9,6 @@
 use crate::errors::Error;
 use crate::token::Tokenizer;
 use alloc::{borrow::ToOwned, string::String, vec::Vec};
-use hex::FromHex;
 
 /// Tries to parse string as a token. Require string to clearly represent the value.
 pub struct StrictTokenizer;
