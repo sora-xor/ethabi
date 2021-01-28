@@ -24,23 +24,23 @@ use proc_macro2::Span;
 
 const ERROR_MSG: &str = "`derive(EthabiContract)` failed";
 
-// #[proc_macro_derive(EthabiContract, attributes(ethabi_contract_options))]
-// pub fn ethabi_derive(input: proc_macro::TokenStream) -> proc_macro::TokenStream {
-// 	let ast = syn::parse(input).expect(ERROR_MSG);
-// 	let gen = impl_ethabi_derive(&ast).expect(ERROR_MSG);
-// 	gen.into()
-// }
-//
-// fn impl_ethabi_derive(ast: &syn::DeriveInput) -> Result<proc_macro2::TokenStream> {
-// 	let options = get_options(&ast.attrs, "ethabi_contract_options")?;
-// 	let path = get_option(&options, "path")?;
-// 	let normalized_path = normalize_path(&path)?;
-// 	let source_file = fs::File::open(&normalized_path)
-// 		.map_err(|_| format!("Cannot load contract abi from `{}`", normalized_path.display()))?;
-// 	let contract = Contract::load(source_file)?;
-// 	let c = contract::Contract::from(&contract);
-// 	Ok(c.generate())
-// }
+#[proc_macro_derive(EthabiContract, attributes(ethabi_contract_options))]
+pub fn ethabi_derive(input: proc_macro::TokenStream) -> proc_macro::TokenStream {
+	let ast = syn::parse(input).expect(ERROR_MSG);
+	let gen = impl_ethabi_derive(&ast).expect(ERROR_MSG);
+	gen.into()
+}
+
+fn impl_ethabi_derive(ast: &syn::DeriveInput) -> Result<proc_macro2::TokenStream> {
+	let options = get_options(&ast.attrs, "ethabi_contract_options")?;
+	let path = get_option(&options, "path")?;
+	let normalized_path = normalize_path(&path)?;
+	let source_file = fs::File::open(&normalized_path)
+		.map_err(|_| format!("Cannot load contract abi from `{}`", normalized_path.display()))?;
+	let contract = Contract::load(source_file)?;
+	let c = contract::Contract::from(&contract);
+	Ok(c.generate())
+}
 
 fn get_options(attrs: &[syn::Attribute], name: &str) -> Result<Vec<syn::NestedMeta>> {
 	let options = attrs.iter().flat_map(syn::Attribute::parse_meta).find(|meta| meta.path().is_ident(name));
