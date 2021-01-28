@@ -15,12 +15,12 @@ mod contract;
 mod event;
 mod function;
 
-use ethabi::{Param, ParamType, Result};
+use anyhow::anyhow;
+use ethabi::{Contract, Param, ParamType, Result};
 use heck::SnakeCase;
-use quote::quote;
-use std::env;
-use std::path::PathBuf;
 use proc_macro2::Span;
+use quote::quote;
+use std::{env, fs, path::PathBuf};
 
 const ERROR_MSG: &str = "`derive(EthabiContract)` failed";
 
@@ -36,7 +36,7 @@ fn impl_ethabi_derive(ast: &syn::DeriveInput) -> Result<proc_macro2::TokenStream
 	let path = get_option(&options, "path")?;
 	let normalized_path = normalize_path(&path)?;
 	let source_file = fs::File::open(&normalized_path)
-		.map_err(|_| format!("Cannot load contract abi from `{}`", normalized_path.display()))?;
+		.map_err(|_| anyhow!("Cannot load contract abi from `{}`", normalized_path.display()))?;
 	let contract = Contract::load(source_file)?;
 	let c = contract::Contract::from(&contract);
 	Ok(c.generate())
@@ -47,7 +47,7 @@ fn get_options(attrs: &[syn::Attribute], name: &str) -> Result<Vec<syn::NestedMe
 
 	match options {
 		Some(syn::Meta::List(list)) => Ok(list.nested.into_iter().collect()),
-		_ => Err("Unexpected meta item".into()),
+		_ => Err(anyhow!("Unexpected meta item").into()),
 	}
 }
 
@@ -59,7 +59,7 @@ fn get_option(options: &[syn::NestedMeta], name: &str) -> Result<String> {
 			_ => None,
 		})
 		.find(|meta| meta.path().is_ident(name))
-		.ok_or_else(|| format!("Expected to find option {}", name))?;
+		.ok_or_else(|| anyhow!("Expected to find option {}", name))?;
 
 	str_value_of_meta_item(item, name)
 }
@@ -71,12 +71,12 @@ fn str_value_of_meta_item(item: &syn::Meta, name: &str) -> Result<String> {
 		}
 	}
 
-	Err(format!(r#"`{}` must be in the form `#[{}="something"]`"#, name, name).into())
+	Err(anyhow!(r#"`{}` must be in the form `#[{}="something"]`"#, name, name).into())
 }
 
 fn normalize_path(relative_path: &str) -> Result<PathBuf> {
 	// workaround for https://github.com/rust-lang/rust/issues/43860
-	let cargo_toml_directory = env::var("CARGO_MANIFEST_DIR").map_err(|_| "Cannot find manifest file")?;
+	let cargo_toml_directory = env::var("CARGO_MANIFEST_DIR").map_err(|_| anyhow!("Cannot find manifest file"))?;
 	let mut path: PathBuf = cargo_toml_directory.into();
 	path.push(relative_path);
 	Ok(path)
@@ -221,12 +221,12 @@ fn to_token(name: &proc_macro2::TokenStream, kind: &ParamType) -> proc_macro2::T
 
 fn from_token(kind: &ParamType, token: &proc_macro2::TokenStream) -> proc_macro2::TokenStream {
 	match *kind {
-		ParamType::Address => quote! { #token.to_address().expect(INTERNAL_ERR) },
-		ParamType::Bytes => quote! { #token.to_bytes().expect(INTERNAL_ERR) },
+		ParamType::Address => quote! { #token.into_address().expect(INTERNAL_ERR) },
+		ParamType::Bytes => quote! { #token.into_bytes().expect(INTERNAL_ERR) },
 		ParamType::FixedBytes(32) => quote! {
 			{
 				let mut result = [0u8; 32];
-				let v = #token.to_fixed_bytes().expect(INTERNAL_ERR);
+				let v = #token.into_fixed_bytes().expect(INTERNAL_ERR);
 				result.copy_from_slice(&v);
 				ethabi::Hash::from(result)
 			}
@@ -236,21 +236,21 @@ fn from_token(kind: &ParamType, token: &proc_macro2::TokenStream) -> proc_macro2
 			quote! {
 				{
 					let mut result = [0u8; #size];
-					let v = #token.to_fixed_bytes().expect(INTERNAL_ERR);
+					let v = #token.into_fixed_bytes().expect(INTERNAL_ERR);
 					result.copy_from_slice(&v);
 					result
 				}
 			}
 		}
-		ParamType::Int(_) => quote! { #token.to_int().expect(INTERNAL_ERR) },
-		ParamType::Uint(_) => quote! { #token.to_uint().expect(INTERNAL_ERR) },
-		ParamType::Bool => quote! { #token.to_bool().expect(INTERNAL_ERR) },
-		ParamType::String => quote! { #token.to_string().expect(INTERNAL_ERR) },
+		ParamType::Int(_) => quote! { #token.into_int().expect(INTERNAL_ERR) },
+		ParamType::Uint(_) => quote! { #token.into_uint().expect(INTERNAL_ERR) },
+		ParamType::Bool => quote! { #token.into_bool().expect(INTERNAL_ERR) },
+		ParamType::String => quote! { #token.into_string().expect(INTERNAL_ERR) },
 		ParamType::Array(ref kind) => {
 			let inner = quote! { inner };
 			let inner_loop = from_token(kind, &inner);
 			quote! {
-				#token.to_array().expect(INTERNAL_ERR).into_iter()
+				#token.into_array().expect(INTERNAL_ERR).into_iter()
 					.map(|#inner| #inner_loop)
 					.collect()
 			}

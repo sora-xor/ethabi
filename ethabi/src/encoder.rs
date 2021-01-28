@@ -104,7 +104,7 @@ impl Mediate {
 	}
 }
 
-fn encode_head_tail(mediates: &Vec<Mediate>) -> Vec<Word> {
+fn encode_head_tail(mediates: &[Mediate]) -> Vec<Word> {
 	let heads_len = mediates.iter().fold(0, |acc, m| acc + m.head_len());
 
 	let (mut result, len) =
@@ -124,7 +124,7 @@ fn encode_head_tail(mediates: &Vec<Mediate>) -> Vec<Word> {
 
 /// Encodes vector of tokens into ABI compliant vector of bytes.
 pub fn encode(tokens: &[Token]) -> Bytes {
-	let mediates = &tokens.iter().map(encode_token).collect();
+	let mediates = &tokens.iter().map(encode_token).collect::<Vec<_>>();
 
 	encode_head_tail(mediates).iter().flat_map(|word| word.to_vec()).collect()
 }

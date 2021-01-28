@@ -9,6 +9,7 @@
 //! Ethereum ABI encoding decoding library.
 
 #![cfg_attr(not(feature = "std"), no_std)]
+#![allow(clippy::module_inception)]
 #![warn(missing_docs)]
 
 #[macro_use]

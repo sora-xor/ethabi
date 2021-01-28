@@ -34,7 +34,7 @@ pub enum ParamType {
 	/// Array with fixed size.
 	FixedArray(Box<ParamType>, usize),
 	/// Tuple containing different types
-	Tuple(Vec<Box<ParamType>>),
+	Tuple(Vec<ParamType>),
 }
 
 impl fmt::Display for ParamType {

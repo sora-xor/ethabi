@@ -67,7 +67,6 @@ mod tests {
 	use super::Operation;
 	use crate::alloc::borrow::ToOwned;
 	use crate::{Function, Param, ParamType};
-	use serde_json;
 
 	#[test]
 	fn deserialize_operation() {

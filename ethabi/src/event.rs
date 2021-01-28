@@ -11,7 +11,8 @@
 use alloc::collections::btree_map::BTreeMap;
 use alloc::{string::String, vec::Vec};
 use serde::Deserialize;
-use tiny_keccak::keccak256;
+use sha3::{Digest, Keccak256};
+use std::collections::HashMap;
 
 use crate::{
 	decode, encode, signature::long_signature, Error, EventParam, Hash, Log, LogParam, ParamType, RawLog,
@@ -62,7 +63,7 @@ impl Event {
 				data.copy_from_slice(&encoded);
 				Ok(data.into())
 			} else {
-				Ok(keccak256(&encoded).into())
+				Ok(Hash::from_slice(Keccak256::digest(&encoded).as_slice()))
 			}
 		}
 
@@ -134,7 +135,7 @@ impl Event {
 			// verify
 			let event_signature = topics.get(0).ok_or(Error::InvalidData)?;
 			if event_signature != &self.signature() {
-				return Err(Error::InvalidData.into());
+				return Err(Error::InvalidData);
 			}
 			1
 		};
@@ -183,7 +184,7 @@ mod tests {
 	};
 	use alloc::{borrow::ToOwned, boxed::Box, vec::Vec};
 	use ethereum_types::U256;
-	use hex::FromHex;
+	use hex_literal::hex;
 
 	#[test]
 	fn test_decoding_event() {
@@ -223,55 +224,52 @@ mod tests {
 						ParamType::FixedArray(Box::new(ParamType::Address), 5),
 					],
 				),
-				"0000000000000000000000000000000000000000000000000000000000000002".parse().unwrap(),
-				"0000000000000000000000001111111111111111111111111111111111111111".parse().unwrap(),
-				"00000000000000000aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa".parse().unwrap(),
-				"00000000000000000bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb".parse().unwrap(),
-				"00000000000000000ccccccccccccccccccccccccccccccccccccccccccccccc".parse().unwrap(),
+				hex!("0000000000000000000000000000000000000000000000000000000000000002").into(),
+				hex!("0000000000000000000000001111111111111111111111111111111111111111").into(),
+				hex!("00000000000000000aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa").into(),
+				hex!("00000000000000000bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb").into(),
+				hex!("00000000000000000ccccccccccccccccccccccccccccccccccccccccccccccc").into(),
 			],
-			data: ("".to_owned()
-				+ "0000000000000000000000000000000000000000000000000000000000000003"
-				+ "0000000000000000000000002222222222222222222222222222222222222222")
-				.from_hex()
-				.unwrap(),
+			data: hex!(
+				"
+				0000000000000000000000000000000000000000000000000000000000000003
+				0000000000000000000000002222222222222222222222222222222222222222
+			"
+			)
+			.into(),
 		};
 		let result = event.parse_log(log).unwrap();
 
 		assert_eq!(
 			result,
 			Log {
-				params: vec![
+				params: [
+					("a", Token::Int(hex!("0000000000000000000000000000000000000000000000000000000000000003").into()),),
+					("b", Token::Int(hex!("0000000000000000000000000000000000000000000000000000000000000002").into()),),
+					("c", Token::Address(hex!("2222222222222222222222222222222222222222").into())),
+					("d", Token::Address(hex!("1111111111111111111111111111111111111111").into())),
 					(
-						"a".to_owned(),
-						Token::Int(U256::from(3)) // Token::Int("0000000000000000000000000000000000000000000000000000000000000003".into())
-					),
-					(
-						"b".to_owned(),
-						Token::Int(U256::from(2)) // Token::Int("0000000000000000000000000000000000000000000000000000000000000002".into())
-					),
-					("c".to_owned(), Token::Address("2222222222222222222222222222222222222222".parse().unwrap())),
-					("d".to_owned(), Token::Address("1111111111111111111111111111111111111111".parse().unwrap())),
-					(
-						"e".to_owned(),
+						"e",
 						Token::FixedBytes(
-							"00000000000000000aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa".from_hex().unwrap()
+							hex!("00000000000000000aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa").into()
 						)
 					),
 					(
-						"f".to_owned(),
+						"f",
 						Token::FixedBytes(
-							"00000000000000000bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb".from_hex().unwrap()
+							hex!("00000000000000000bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb").into()
 						)
 					),
 					(
-						"g".to_owned(),
+						"g",
 						Token::FixedBytes(
-							"00000000000000000ccccccccccccccccccccccccccccccccccccccccccccccc".from_hex().unwrap()
+							hex!("00000000000000000ccccccccccccccccccccccccccccccccccccccccccccccc").into()
 						)
 					),
 				]
-				.into_iter()
-				.map(|(name, value)| LogParam { name, value })
+				.iter()
+				.cloned()
+				.map(|(name, value)| LogParam { name: name.to_string(), value })
 				.collect::<Vec<_>>()
 			}
 		);

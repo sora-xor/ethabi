@@ -106,7 +106,7 @@ impl<T> From<Vec<T>> for Topic<T> {
 }
 
 impl<T> Into<Vec<T>> for Topic<T> {
-	fn into(self: Self) -> Vec<T> {
+	fn into(self) -> Vec<T> {
 		match self {
 			Topic::Any => vec![],
 			Topic::This(topic) => vec![topic],
