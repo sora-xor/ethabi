@@ -153,7 +153,7 @@ impl Function {
 		quote! {
 			pub mod #module_name {
 				use ethabi;
-				use super::INTERNAL_ERR;
+				use super::{INTERNAL_ERR, ToOwned, Box, String, Vec};
 
 				fn function() -> ethabi::Function {
 					ethabi::Function {
@@ -213,7 +213,7 @@ mod tests {
 		let expected = quote! {
 			pub mod empty {
 				use ethabi;
-				use super::INTERNAL_ERR;
+				use super::{INTERNAL_ERR, ToOwned, Box, String, Vec};
 
 				fn function() -> ethabi::Function {
 					ethabi::Function {
@@ -274,7 +274,7 @@ mod tests {
 		let expected = quote! {
 			pub mod hello {
 				use ethabi;
-				use super::INTERNAL_ERR;
+				use super::{INTERNAL_ERR, ToOwned, Box, String, Vec};
 
 				fn function() -> ethabi::Function {
 					ethabi::Function {
@@ -353,7 +353,7 @@ mod tests {
 		let expected = quote! {
 			pub mod multi {
 				use ethabi;
-				use super::INTERNAL_ERR;
+				use super::{INTERNAL_ERR, ToOwned, Box, String, Vec};
 
 				fn function() -> ethabi::Function {
 					ethabi::Function {

@@ -38,24 +38,25 @@ impl Contract {
 		quote! {
 			use ethabi;
 			const INTERNAL_ERR: &'static str = "`ethabi_derive` internal error";
+			use crate::alloc::{borrow::ToOwned, boxed::Box, string::String, vec::Vec};
 
 			#constructor
 
 			/// Contract's functions.
 			pub mod functions {
-				use super::INTERNAL_ERR;
+				use super::{INTERNAL_ERR, ToOwned, Box, String, Vec};
 				#(#functions)*
 			}
 
 			/// Contract's events.
 			pub mod events {
-				use super::INTERNAL_ERR;
+				use super::{INTERNAL_ERR, ToOwned, Box, String, Vec};
 				#(#events)*
 			}
 
 			/// Contract's logs.
 			pub mod logs {
-				use super::INTERNAL_ERR;
+				use super::{INTERNAL_ERR, ToOwned, Box, String, Vec};
 				use ethabi;
 				#(#logs)*
 			}
@@ -87,17 +88,17 @@ mod test {
 
 			/// Contract's functions.
 			pub mod functions {
-				use super::INTERNAL_ERR;
+				use super::{INTERNAL_ERR, ToOwned, Box, String, Vec};
 			}
 
 			/// Contract's events.
 			pub mod events {
-				use super::INTERNAL_ERR;
+				use super::{INTERNAL_ERR, ToOwned, Box, String, Vec};
 			}
 
 			/// Contract's logs.
 			pub mod logs {
-				use super::INTERNAL_ERR;
+				use super::{INTERNAL_ERR, ToOwned, Box, String, Vec};
 				use ethabi;
 			}
 		};

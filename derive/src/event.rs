@@ -164,7 +164,7 @@ impl Event {
 		quote! {
 			pub mod #name {
 				use ethabi;
-				use super::INTERNAL_ERR;
+				use super::{INTERNAL_ERR, ToOwned, Box, String, Vec};
 
 				pub fn event() -> ethabi::Event {
 					ethabi::Event {
@@ -229,7 +229,7 @@ mod tests {
 		let expected = quote! {
 			pub mod hello {
 				use ethabi;
-				use super::INTERNAL_ERR;
+				use super::{INTERNAL_ERR, ToOwned, Box, String, Vec};
 
 				pub fn event() -> ethabi::Event {
 					ethabi::Event {
@@ -277,7 +277,7 @@ mod tests {
 		let expected = quote! {
 			pub mod one {
 				use ethabi;
-				use super::INTERNAL_ERR;
+				use super::{INTERNAL_ERR, ToOwned, Box, String, Vec};
 
 				pub fn event() -> ethabi::Event {
 					ethabi::Event {
