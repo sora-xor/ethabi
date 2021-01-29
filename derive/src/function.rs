@@ -155,7 +155,7 @@ impl Function {
 				use ethabi;
 				use super::{INTERNAL_ERR, ToOwned, Box, String, Vec};
 
-				fn function() -> ethabi::Function {
+				pub fn function() -> ethabi::Function {
 					ethabi::Function {
 						name: #name.into(),
 						inputs: #recreate_inputs,
