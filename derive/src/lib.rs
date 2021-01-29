@@ -23,6 +23,7 @@ use std::{env, fs, path::PathBuf};
 
 const ERROR_MSG: &str = "`derive(EthabiContract)` failed";
 
+
 #[proc_macro_derive(EthabiContract, attributes(ethabi_contract_options))]
 pub fn ethabi_derive(input: proc_macro::TokenStream) -> proc_macro::TokenStream {
 	let ast = syn::parse(input).expect(ERROR_MSG);
