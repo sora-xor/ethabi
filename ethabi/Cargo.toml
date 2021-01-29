@@ -19,7 +19,7 @@ serde = { version = "1.0", features = ["alloc", "derive"], default-features = fa
 serde_json = { version = "1.0", features = ["alloc"], default-features = false }
 sha3 = { version = "0.9", default-features = false }
 ethereum-types = { git = "https://github.com/vmarkushin/parity-common.git", branch = "no-std", package = "ethereum-types", default-features = false, features = ["serialize_no_std", "codec"] }
-thiserror = "1"
+#thiserror = "1"
 uint = { git = "https://github.com/vmarkushin/parity-common.git", branch = "no-std", package = "uint", default-features = false }
 
 [dev-dependencies]

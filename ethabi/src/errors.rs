@@ -4,7 +4,7 @@ mod errors {
 	use alloc::string;
 	use alloc::string::String;
 	use core::num;
-	use thiserror::Error;
+	// use thiserror::Error;
 	/// Ethabi result type
 	pub type Result<T> = core::result::Result<T, Error>;
 	/// Ethabi errors
