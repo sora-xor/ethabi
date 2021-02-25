@@ -70,14 +70,14 @@ impl Function {
 	/// - `functionName():(uint256)`
 	/// - `functionName(bool):(uint256,string)`
 	/// - `functionName(uint256,bytes32):(string,uint256)`
-	pub fn signature(&self) -> String {
+	pub fn signature(&self, with_return: bool) -> String {
 		let inputs = self.inputs.iter().map(|p| p.kind.to_string()).collect::<Vec<_>>().join(",");
 
 		let outputs = self.outputs.iter().map(|p| p.kind.to_string()).collect::<Vec<_>>().join(",");
 
-		match (inputs.len(), outputs.len()) {
-			(_, 0) => format!("{}({})", self.name, inputs),
-			(_, _) => format!("{}({}):({})", self.name, inputs, outputs),
+		match (inputs.len(), outputs.len(), with_return) {
+			(_, 0, _) | (_, _, false) => format!("{}({})", self.name, inputs),
+			(_, _, true) => format!("{}({}):({})", self.name, inputs, outputs),
 		}
 	}
 }
