@@ -181,7 +181,7 @@ mod tests {
 		token::Token,
 		Event, EventParam, LogParam, ParamType,
 	};
-	use alloc::{borrow::ToOwned, boxed::Box, vec::Vec, string::ToString};
+	use alloc::{borrow::ToOwned, boxed::Box, string::ToString, vec::Vec};
 	use hex_literal::hex;
 
 	#[test]
