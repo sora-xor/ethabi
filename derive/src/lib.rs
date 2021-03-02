@@ -15,14 +15,13 @@ mod contract;
 mod event;
 mod function;
 
-use ethabi::{Contract, Param, ParamType, Result, Error};
+use ethabi::{Contract, Error, Param, ParamType, Result};
 use heck::SnakeCase;
 use proc_macro2::Span;
 use quote::quote;
 use std::{env, fs, path::PathBuf};
 
 const ERROR_MSG: &str = "`derive(EthabiContract)` failed";
-
 
 #[proc_macro_derive(EthabiContract, attributes(ethabi_contract_options))]
 pub fn ethabi_derive(input: proc_macro::TokenStream) -> proc_macro::TokenStream {
@@ -76,7 +75,8 @@ fn str_value_of_meta_item(item: &syn::Meta, name: &str) -> Result<String> {
 
 fn normalize_path(relative_path: &str) -> Result<PathBuf> {
 	// workaround for https://github.com/rust-lang/rust/issues/43860
-	let cargo_toml_directory = env::var("CARGO_MANIFEST_DIR").map_err(|_| Error::Other("Cannot find manifest file".into()))?;
+	let cargo_toml_directory =
+		env::var("CARGO_MANIFEST_DIR").map_err(|_| Error::Other("Cannot find manifest file".into()))?;
 	let mut path: PathBuf = cargo_toml_directory.into();
 	path.push(relative_path);
 	Ok(path)
