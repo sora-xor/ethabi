@@ -124,7 +124,7 @@ fn encode_head_tail(mediates: &[Mediate]) -> Vec<Word> {
 
 /// Encodes vector of tokens into ABI compliant vector of bytes.
 pub fn encode(tokens: &[Token]) -> Bytes {
-	let mediates = &tokens.iter().map(encode_token).collect::<Vec<_>>();
+	let mediates = &tokens.iter().map(|x| encode_token(x, true)).collect::<Vec<_>>();
 
 	encode_head_tail(mediates).iter().flat_map(|word| word.to_vec()).collect()
 }
@@ -134,7 +134,8 @@ pub fn encode_packed(tokens: &[Token]) -> Bytes {
 	tokens.iter().flat_map(encode_token_packed).collect()
 }
 
-fn encode_token(token: &Token) -> Mediate {
+fn encode_token(token: &Token, with_len: bool) -> Mediate {
+	let encode_func = |token| encode_token(token, with_len);
 	match *token {
 		Token::Address(ref address) => {
 			let mut padded = [0u8; 32];
@@ -154,12 +155,15 @@ fn encode_token(token: &Token) -> Mediate {
 			Mediate::Raw(vec![value])
 		}
 		Token::Array(ref tokens) => {
-			let mediates = tokens.iter().map(encode_token).collect();
-
-			Mediate::PrefixedArrayWithLength(mediates)
+			let mediates = tokens.iter().map(encode_func).collect();
+			if with_len {
+				Mediate::PrefixedArrayWithLength(mediates)
+			} else {
+				Mediate::PrefixedArray(mediates)
+			}
 		}
 		Token::FixedArray(ref tokens) => {
-			let mediates = tokens.iter().map(encode_token).collect();
+			let mediates = tokens.iter().map(encode_func).collect();
 
 			if token.is_dynamic() {
 				Mediate::PrefixedArray(mediates)
@@ -168,12 +172,12 @@ fn encode_token(token: &Token) -> Mediate {
 			}
 		}
 		Token::Tuple(ref tokens) if token.is_dynamic() => {
-			let mediates = tokens.iter().map(encode_token).collect();
+			let mediates = tokens.iter().map(encode_func).collect();
 
 			Mediate::PrefixedTuple(mediates)
 		}
 		Token::Tuple(ref tokens) => {
-			let mediates = tokens.iter().map(encode_token).collect();
+			let mediates = tokens.iter().map(encode_func).collect();
 
 			Mediate::RawTuple(mediates)
 		}
@@ -199,8 +203,13 @@ fn encode_token_packed(token: &Token) -> Vec<u8> {
 		Token::Bool(b) => {
 			vec![if b { 1 } else { 0 }]
 		}
-		Token::Array(ref tokens) | Token::FixedArray(ref tokens) | Token::Tuple(ref tokens) => {
+		// FIXME: the two cases below may work incorrectly on some inputs (e.g. multi-dimensional arrays).
+		Token::FixedArray(ref tokens) | Token::Tuple(ref tokens) => {
 			tokens.iter().flat_map(encode_token_packed).collect()
+		}
+		Token::Array(ref tokens) => {
+			let mediates: Vec<_> = tokens.iter().map(|x| encode_token(x, false)).collect();
+			encode_head_tail(&mediates).iter().flat_map(|word| word.to_vec()).collect()
 		}
 	}
 }
@@ -249,8 +258,8 @@ mod tests {
 		let encoded = encode_packed(&tokens);
 		let expected = hex!(
 			"
-			1111111111111111111111111111111111111111
-			2222222222222222222222222222222222222222
+			0000000000000000000000001111111111111111111111111111111111111111
+			0000000000000000000000002222222222222222222222222222222222222222
 		"
 		)
 		.to_vec();
@@ -343,10 +352,10 @@ mod tests {
 		let encoded = encode_packed(&tokens);
 		let expected = hex!(
 			"
-			1111111111111111111111111111111111111111
-			2222222222222222222222222222222222222222
-			3333333333333333333333333333333333333333
-			4444444444444444444444444444444444444444
+			0000000000000000000000001111111111111111111111111111111111111111
+			0000000000000000000000002222222222222222222222222222222222222222
+			0000000000000000000000003333333333333333333333333333333333333333
+			0000000000000000000000004444444444444444444444444444444444444444
 		"
 		)
 		.to_vec();
@@ -381,10 +390,10 @@ mod tests {
 		let encoded = encode_packed(&tokens);
 		let expected = hex!(
 			"
-			1111111111111111111111111111111111111111
-			2222222222222222222222222222222222222222
-			3333333333333333333333333333333333333333
-			4444444444444444444444444444444444444444
+			0000000000000000000000001111111111111111111111111111111111111111
+			0000000000000000000000002222222222222222222222222222222222222222
+			0000000000000000000000003333333333333333333333333333333333333333
+			0000000000000000000000004444444444444444444444444444444444444444
 		"
 		)
 		.to_vec();
@@ -419,8 +428,10 @@ mod tests {
 		let encoded = encode_packed(&tokens);
 		let expected = hex!(
 			"
-			1111111111111111111111111111111111111111
-			2222222222222222222222222222222222222222
+			0000000000000000000000000000000000000000000000000000000000000040
+			0000000000000000000000000000000000000000000000000000000000000060
+			0000000000000000000000001111111111111111111111111111111111111111
+			0000000000000000000000002222222222222222222222222222222222222222
 		"
 		)
 		.to_vec();
@@ -459,10 +470,12 @@ mod tests {
 		let encoded = encode_packed(&tokens);
 		let expected = hex!(
 			"
-			1111111111111111111111111111111111111111
-			2222222222222222222222222222222222222222
-			3333333333333333333333333333333333333333
-			4444444444444444444444444444444444444444
+			0000000000000000000000000000000000000000000000000000000000000040
+			0000000000000000000000000000000000000000000000000000000000000080
+			0000000000000000000000001111111111111111111111111111111111111111
+			0000000000000000000000002222222222222222222222222222222222222222
+			0000000000000000000000003333333333333333333333333333333333333333
+			0000000000000000000000004444444444444444444444444444444444444444
 		"
 		)
 		.to_vec();
@@ -545,8 +558,14 @@ mod tests {
 		assert_eq!(encoded, expected);
 
 		let encoded = encode_packed(&tokens);
-		assert!(encoded.is_empty());
-	}
+		let expected = hex!(
+			"
+			0000000000000000000000000000000000000000000000000000000000000020
+			0000000000000000000000000000000000000000000000000000000000000020
+		"
+		)
+			.to_vec();
+		assert_eq!(encoded, expected);	}
 
 	#[test]
 	fn encode_bytes() {
@@ -884,8 +903,10 @@ mod tests {
 		let encoded = encode_packed(&tokens);
 		let expected = hex!(
 			"
+			0000000000000000000000000000000000000000000000000000000000000020
+			0000000000000000000000000000000000000000000000000000000000000026
 			019c80031b20d5e69c8093a571162299032018d913930d93ab320ae5ea44a421
-			8a274f00d607
+			8a274f00d6070000000000000000000000000000000000000000000000000000
 		"
 		)
 		.to_vec();
@@ -919,10 +940,14 @@ mod tests {
 		let encoded = encode_packed(&tokens);
 		let expected = hex!(
 			"
+			0000000000000000000000000000000000000000000000000000000000000040
+			00000000000000000000000000000000000000000000000000000000000000a0
+			0000000000000000000000000000000000000000000000000000000000000026
 			4444444444444444444444444444444444444444444444444444444444444444
-			444444444444
+			4444444444440000000000000000000000000000000000000000000000000000
+			0000000000000000000000000000000000000000000000000000000000000026
 			6666666666666666666666666666666666666666666666666666666666666666
-			666666666666
+			6666666666660000000000000000000000000000000000000000000000000000
 		"
 		)
 		.to_vec();
