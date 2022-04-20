@@ -19,7 +19,6 @@ use ethabi::{Contract, Error, Param, ParamType, Result};
 use heck::SnakeCase;
 use proc_macro2::Span;
 use quote::quote;
-use std::{env, fs, path::PathBuf};
 
 const ERROR_MSG: &str = "`derive(EthabiContract)` failed";
 
@@ -71,15 +70,6 @@ fn str_value_of_meta_item(item: &syn::Meta, name: &str) -> Result<String> {
 	}
 
 	Err(Error::Other(format!(r#"`{}` must be in the form `#[{}="something"]`"#, name, name)).into())
-}
-
-fn normalize_path(relative_path: &str) -> Result<PathBuf> {
-	// workaround for https://github.com/rust-lang/rust/issues/43860
-	let cargo_toml_directory =
-		env::var("CARGO_MANIFEST_DIR").map_err(|_| Error::Other("Cannot find manifest file".into()))?;
-	let mut path: PathBuf = cargo_toml_directory.into();
-	path.push(relative_path);
-	Ok(path)
 }
 
 fn to_syntax_string(param_type: &ethabi::ParamType) -> proc_macro2::TokenStream {
