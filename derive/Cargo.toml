@@ -15,6 +15,6 @@ proc-macro = true
 anyhow = "1"
 ethabi = { path = "../ethabi", version = "13.0.0" }
 heck = "0.3.1"
-syn = { version = "1.0.60", default-features = false, features = ["derive", "parsing", "printing", "proc-macro"] }
+syn = { version = "1.0.98", default-features = false, features = ["derive", "parsing", "printing", "proc-macro"] }
 quote = "1.0.3"
 proc-macro2 = "1.0.7"
