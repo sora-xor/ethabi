@@ -170,7 +170,7 @@ impl Function {
 				use ethabi;
 				use super::INTERNAL_ERR;
 
-				fn function() -> ethabi::Function {
+				pub fn function() -> ethabi::Function {
 					ethabi::Function {
 						name: #name.into(),
 						inputs: #recreate_inputs,
