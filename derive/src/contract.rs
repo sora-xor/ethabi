@@ -43,20 +43,19 @@ impl Contract {
 
 			/// Contract's functions.
 			pub mod functions {
-				use super::INTERNAL_ERR;
+				use super::*;
 				#(#functions)*
 			}
 
 			/// Contract's events.
 			pub mod events {
-				use super::INTERNAL_ERR;
+				use super::*;
 				#(#events)*
 			}
 
 			/// Contract's logs.
 			pub mod logs {
-				use super::INTERNAL_ERR;
-				use ethabi;
+				use super::*;
 				#(#logs)*
 			}
 		}
@@ -88,18 +87,17 @@ mod test {
 
 			/// Contract's functions.
 			pub mod functions {
-				use super::INTERNAL_ERR;
+				use super::*;
 			}
 
 			/// Contract's events.
 			pub mod events {
-				use super::INTERNAL_ERR;
+				use super::*;
 			}
 
 			/// Contract's logs.
 			pub mod logs {
-				use super::INTERNAL_ERR;
-				use ethabi;
+				use super::*;
 			}
 		};
 
